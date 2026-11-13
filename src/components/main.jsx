@@ -17,19 +17,19 @@ export default function Main() {
      const recipeitem = React.useRef(null);
 
           
-         React.useEffect(function(){
-            if(data!==" " && recipeitem!==null){
-                recipeitem.current.scrollIntoView({behavior: smooth});
-            }
-         },[data])
-
-
+     React.useEffect(() => {
+        if (data !== "" && recipeitem.current) {
+            recipeitem.current.scrollIntoView({
+                behavior: "smooth"
+            });
+        }
+    }, [data]);
 
      async function toggleRecipeShown() {
       
    try {
        const response = await getIngredients(item);
-       console.log("Recipe returned:", data)
+       console.log("Recipe returned:", response)
        setdata(response)
        console.log("State before update:", data)
     }
@@ -66,7 +66,7 @@ export default function Main() {
             ingredientsListItems={ingredientsListItems}
             />}
             
-            {data> 1&& <ClaudeRecipe 
+            {data && <ClaudeRecipe 
                ingred={data}
                />}
 
