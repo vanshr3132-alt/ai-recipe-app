@@ -1,16 +1,39 @@
-# React + Vite
+# AI Recipe Generator 🍳
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React application that generates recipes using Google's Gemini API based on ingredients entered by the user.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Add ingredients dynamically
+- AI-generated recipes using Gemini API
+- React state management
+- Loading state
+- Error handling
+- Markdown formatted recipe output
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React
+- JavaScript
+- Vite
+- Gemini API
+- CSS
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev
+```
+
+## Environment Variables
+
+Create a `.env` file:
+
+```env
+VITE_GEMINI_API_KEY=your_api_key_here
+```
+
+## Author
+
+Vansh Rana
