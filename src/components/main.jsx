@@ -11,7 +11,10 @@ export default function Main() {
         <li key={ingredient}>{ingredient}</li>
     ))
     
-    // const [recipeShown, setRecipeShown] = React.useState(false)
+    const [error, setError] = React.useState("");
+
+    const [isLoading, setIsLoading] = React.useState(false);
+    
   const[data,setdata]= React.useState("");
       
      const recipeitem = React.useRef(null);
@@ -26,16 +29,20 @@ export default function Main() {
     }, [data]);
 
      async function toggleRecipeShown() {
-      
+        setIsLoading(true);
+        setError("");
    try {
        const response = await getIngredients(item);
        console.log("Recipe returned:", response)
        setdata(response)
-       console.log("State before update:", data)
+      
     }
     catch(error) {
         console.log(error);
-        setdata("sorry, server is busy. Please try again later :(")
+        setError("⚠️ Gemini is busy. Please try again later.");
+        }
+        finally {
+            setIsLoading(false);
         }
         
 } 
@@ -66,10 +73,13 @@ export default function Main() {
             ingredientsListItems={ingredientsListItems}
             />}
             
-            {data && <ClaudeRecipe 
-               ingred={data}
-               />}
+            {isLoading && <p>🍳 Generating recipe...</p>}
 
+{error && <p className="error">{error}</p>}
+
+{!isLoading && !error && data && (
+    <ClaudeRecipe ingred={data} />
+)}
 
         </main>
     )
