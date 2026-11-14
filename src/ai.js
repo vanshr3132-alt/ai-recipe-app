@@ -5,7 +5,7 @@ const SYSTEM_PROMPT =` You are an assistant that receives a list of ingredients 
 const ai = new GoogleGenAI({
     apiKey: import.meta.env.VITE_GEMINI_API_KEY
 })
-export async function getIngredients(ingredientsArr) {
+export async function getRecipeGemini(ingredientsArr) {
     const ingredientsString = ingredientsArr.join(", ")
     try {
         console.log("sending req")
@@ -24,6 +24,7 @@ export async function getIngredients(ingredientsArr) {
     } 
         catch (err) {
             console.log(err)
+            throw err;
         }
       
 }

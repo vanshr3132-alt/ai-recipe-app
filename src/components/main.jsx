@@ -1,13 +1,12 @@
 import React from "react";
 import ListItems from "../ingredientlist";
-import { getIngredients } from "../ai";
+import { getRecipeGemini } from "../ai";
 import ClaudeRecipe from "./clauderecipe";
-import { Behavior } from "@google/genai";
 export default function Main() {
 
 
-    const [item,setItem]= React.useState(["fish","eggs","main spices","prawns"]);
-    const ingredientsListItems = item.map(ingredient => (
+    const [ingredients,setIngredients]= React.useState(["fish","eggs","main spices","prawns"]);
+    const ingredientsListItems = ingredients.map(ingredient => (
         <li key={ingredient}>{ingredient}</li>
     ))
     
@@ -15,30 +14,30 @@ export default function Main() {
 
     const [isLoading, setIsLoading] = React.useState(false);
     
-  const[data,setdata]= React.useState("");
+  const[recipe,setRecipe]= React.useState("");
       
-     const recipeitem = React.useRef(null);
+     const recipeItem = React.useRef(null);
 
           
      React.useEffect(() => {
-        if (data !== "" && recipeitem.current) {
-            recipeitem.current.scrollIntoView({
+        if (recipe !== "" && recipeItem.current) {
+            recipeItem.current.scrollIntoView({
                 behavior: "smooth"
             });
         }
-    }, [data]);
+    }, [recipe]);
 
-     async function toggleRecipeShown() {
+     async function fetchRecipe() {
         setIsLoading(true);
         setError("");
    try {
-       const response = await getIngredients(item);
-       console.log("Recipe returned:", response)
-       setdata(response)
+       const response = await getRecipeGemini(ingredients);
+    
+       setRecipe(response)
       
     }
-    catch(error) {
-        console.log(error);
+    catch(err) {
+        console.log("caught in Main:", err?.status, err?.message);
         setError("⚠️ Gemini is busy. Please try again later.");
         }
         finally {
@@ -50,11 +49,15 @@ export default function Main() {
 
         function addIngredient(formData){
     const newIngredient = formData.get("ingredient");
-     setItem(prevItem=> [...prevItem,
-       newIngredient
-     ])
-
-
+    if (newIngredient === "") return; 
+   
+    setIngredients(prev => {
+        const alreadyThere = prev.some(i => i.toLowerCase() === newIngredient.toLowerCase());
+        if (alreadyThere) {
+            return prev;
+        }
+        return [...prev, newIngredient];
+    });
 
         }
     return (
@@ -67,9 +70,9 @@ export default function Main() {
                 <button> Add ingredient</button>
             </form>
             {ingredientsListItems.length>0 && <ListItems
-            ingredient={item}
-             ref={recipeitem}
-            toggleRecipeShown={toggleRecipeShown}
+            ingredient={ingredients}
+             ref={recipeItem}
+           fetchRecipe={fetchRecipe}
             ingredientsListItems={ingredientsListItems}
             />}
             
@@ -77,8 +80,8 @@ export default function Main() {
 
 {error && <p className="error">{error}</p>}
 
-{!isLoading && !error && data && (
-    <ClaudeRecipe ingred={data} />
+{!isLoading && !error && recipe && (
+    <ClaudeRecipe ingred={recipe} />
 )}
 
         </main>
