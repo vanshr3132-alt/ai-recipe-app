@@ -22,6 +22,8 @@ A React application that generates recipes using Google's Gemini API based on in
 ## Live Demo
 https://ai-recipe-app-chi.vercel.app
 
+
+![Project screenshot](ai-recipesc.png)
 ## Installation
 
 ```bash
